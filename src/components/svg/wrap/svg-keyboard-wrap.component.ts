@@ -96,7 +96,7 @@ export class SvgKeyboardWrapComponent implements OnChanges {
     private keyEditConfig: { keyActions: KeyAction[], keyId: number };
     private popoverInitKeyAction: KeyAction;
     private currentLayer: number = 0;
-    private tooltipData: { posTop: number, posLeft: number, content: {name: string, value: string}[], shown: boolean };
+    private tooltipData: { posTop: number, posLeft: number, content: { name: string, value: string }[], shown: boolean };
     private layers: Layer[];
 
     constructor(
@@ -192,7 +192,7 @@ export class SvgKeyboardWrapComponent implements OnChanges {
 
         this.tooltipData = {
             posLeft: posLeft,
-            posTop:  posTop,
+            posTop: posTop,
             content: dummyData,
             shown: true
         };
@@ -233,4 +233,5 @@ export class SvgKeyboardWrapComponent implements OnChanges {
 
         this.currentLayer = index;
     }
+
 }
