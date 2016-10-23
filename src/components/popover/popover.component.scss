@@ -1,21 +1,47 @@
 :host {
     display: flex;
     flex-direction: column;
-    max-width: none;
-    padding: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 100px;
+
+    > .container-fluid {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+
+        > div:first-child, > div:last-child {
+            flex: 1;
+        }
+
+        > :nth-child(2) {
+            display: flex;
+            flex: 8;
+        }
+
+        > div:last-child {
+            display: flex;
+            flex: 1 0 8%;
+            > .popover-action {
+                flex: 1;
+            }
+        }
+    }
 }
 
 .popover-action {
-    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.6em;
     margin: 0;
     font-size: 14px;
     background-color: #f7f7f7;
     border-top: 1px solid #ebebeb;
     border-radius: 0 0 5px 5px;
     text-align: right;
+
+    button:first-child {
+        margin-right: 0.5em;
+    }
 }
 
 .popover-title {
@@ -28,10 +54,16 @@
             top: 1px;
             display: flex;
 
+            > li {
+                flex: 1;
+            }
+
             .menu-tabs--item {
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 cursor: pointer;
+                font-size: 1vw;
 
                 i {
                     margin-right: 0.25em;
@@ -43,6 +75,7 @@
 
 .popover-content {
     padding: 10px 24px;
+    flex: 1;
 }
 
 .select2-item {

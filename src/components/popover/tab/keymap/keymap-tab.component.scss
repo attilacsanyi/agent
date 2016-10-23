@@ -5,11 +5,16 @@
     > div {
         display: flex;
         margin-top: 2px;
+    }
+
+    .switcher {
+        flex-shrink: 0;
 
         b {
             display: flex;
             align-items: center;
             margin-right: 7px;
+            font-size: 1vw;
         }
 
         select2 {
@@ -20,9 +25,15 @@
     > div:last-child {
         margin-top: 10px;
 
-        img {
-            max-height: 100%;
-            max-width: 100%;
+        .image-container {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+
+            img {
+                max-height: 100%;
+                max-width: 100%;
+            }
         }
     }
 }

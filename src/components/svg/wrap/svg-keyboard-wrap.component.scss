@@ -4,6 +4,15 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+    popover {
+        max-width: 60%;
+        max-height: 60%;
+        padding: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 100px;
+    }
 }
 
 svg-keyboard {
