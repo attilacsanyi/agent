@@ -4,6 +4,7 @@ var webpackFailPlugin = require('webpack-fail-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+var ngtools = require('@ngtools/webpack');
 
 var rootDir = path.resolve(__dirname, '../');
 console.log(rootDir, __dirname);
@@ -29,7 +30,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.ts$/, loaders: ['ts-loader', 'angular2-template-loader'], exclude: /node_modules/ },
+            { test: /\.ts$/, loader: ['@ngtools/webpack'], exclude: /node_modules/ },
             { test: /\.html$/, loader: 'html-loader?attrs=false' },
             {
                 test: /\.scss$/,
@@ -41,6 +42,10 @@ module.exports = {
     },
     plugins: [
         //   new webpack.optimize.UglifyJsPlugin({ minimize: true })
+        new ngtools.AotPlugin({
+            tsConfigPath: path.resolve(rootDir, 'src/tsconfig.json'),
+            entryModule: path.resolve(rootDir, 'src/app.module') + '#AppModule'
+        }),
         new SvgStore({
             svgoOptions: {
                 plugins: [
