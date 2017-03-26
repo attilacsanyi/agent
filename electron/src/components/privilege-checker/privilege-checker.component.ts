@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -12,6 +12,7 @@ import 'rxjs/add/operator/takeWhile';
 import { remote } from 'electron';
 import * as path from 'path';
 import * as sudo from 'sudo-prompt';
+import * as os from 'os';
 
 import { UhkDeviceService } from './../../services/uhk-device.service';
 
@@ -22,7 +23,7 @@ import { UhkDeviceService } from './../../services/uhk-device.service';
 })
 export class PrivilegeCheckerComponent {
 
-    constructor(private router: Router, private uhkDevice: UhkDeviceService) {
+    constructor(private router: Router, private uhkDevice: UhkDeviceService, private ngZone: NgZone) {
         uhkDevice.isConnected()
             .distinctUntilChanged()
             .takeWhile(connected => connected)
@@ -48,6 +49,9 @@ export class PrivilegeCheckerComponent {
         switch (process.platform) {
             case 'linux':
                 permissionSetter = this.setUpPermissionsOnLinux();
+                break;
+            case 'win32':
+                permissionSetter = this.setUpPermissionsOnWindows();
                 break;
             default:
                 permissionSetter = Observable.throw('Permissions couldn\'t be set. Invalid platform: ' + process.platform);
@@ -76,6 +80,29 @@ export class PrivilegeCheckerComponent {
             } else {
                 subject.complete();
             }
+        });
+
+        return subject.asObservable();
+    }
+
+    private setUpPermissionsOnWindows(): Observable<void> {
+        const subject = new ReplaySubject<void>();
+        const rootDir = path.resolve(path.join(remote.process.cwd(), remote.process.argv[1]), '..');
+        const platform = os.arch();
+        const installer = path.resolve(rootDir, `driver/UHKDriverInstaller${platform}.exe`);
+        const options = {
+            name: 'Installing UHK driver'
+        };
+        sudo.exec(installer, options, (error: any, stdout: any, stderr: any) => {
+            this.ngZone.run(() => {
+                if (error) {
+                    console.error(stderr);
+                    subject.error(error);
+                } else {
+                    console.debug(stdout);
+                    subject.complete();
+                }
+            });
         });
 
         return subject.asObservable();

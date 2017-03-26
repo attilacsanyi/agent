@@ -78,6 +78,10 @@ module.exports = {
                     to: 'rules'
                 },
                 {
+                    from: path.join(__dirname, 'driver'),
+                    to: 'driver'
+                },
+                {
                     from: 'node_modules/usb',
                     to: 'vendor/usb'
                 }
